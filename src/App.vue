@@ -1,85 +1,45 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import * as d3 from 'd3'
+</script>
+
+<script lang="ts">
+export default {
+  mounted() {
+    const canvas: any = d3.select('.canvas')
+    const svg: any = canvas.append('svg').attr('height', 600).attr('width', 600)
+    svg
+      .append('rect')
+      .attr('width', 200)
+      .attr('height', 200)
+      .attr('fill', 'blue')
+      .attr('x', 20)
+      .attr('y', 20)
+    console.log('container', this.$refs.canvas)
+  }
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <header></header>
+  <div class="min-h-screen flex flex-col max-w-6xl mx-auto">
+    <div class="self-end py-8 px-12 gap-4 flex">
+      <button class="text-zinc-400 hover:text-black transition delay-50 hover:underline">
+        Github
+      </button>
+      <button class="text-zinc-400 hover:text-black transition delay-50 hover:underline">
+        Portfolio
+      </button>
     </div>
-  </header>
-
-  <RouterView />
+    <div class="flex flex-col self-center h-[20vh]">
+      <div class="my-auto">
+        <p class="text-zinc-600 font-semibold text-center text-lg animate-fade">
+          Data visualization
+        </p>
+        <p class="text-zinc-400 text-center py-4 animate-fade">
+          Made with <a target="blank" href="https://d3js.org/">D3.js</a>
+        </p>
+      </div>
+      <div id="canvas" ref="canvas" class="canvas"></div>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
