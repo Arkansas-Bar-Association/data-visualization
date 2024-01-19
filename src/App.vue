@@ -1,55 +1,105 @@
 <script setup lang="ts">
 import * as d3 from 'd3'
+import Papa from 'papaparse'
+import { ref } from 'vue'
 </script>
 
 <script lang="ts">
 export default {
   mounted() {
-    // const canvas: any = d3.select('.canvas')
-    // const svg: any = canvas.append('svg').attr('height', 600).attr('width', 600)
-    // svg
-    //   .append('rect')
-    //   .attr('width', 200)
-    //   .attr('height', 200)
-    //   .attr('fill', 'blue')
-    //   .attr('x', 20)
-    //   .attr('y', 20)
-    // console.log('container', this.$refs.canvas)
+    let aapl = []
 
-    // Declare the chart dimensions and margins.
-    const width = 640
-    const height = 400
-    const marginTop = 20
-    const marginRight = 20
-    const marginBottom = 30
-    const marginLeft = 40
+    const response = fetch('../src/assets/aapl.csv')
+      .then((csv) => csv.text())
+      .then((csv) =>
+        Papa.parse(csv, {
+          header: true,
+          dynamicTyping: true
+        })
+      )
+      .then((csv: any) => {
+        csv.data.forEach((h: any) => {
+          h.date = Date.parse(h.date)
+        })
+        aapl = csv.data
+        console.log('aapl - ', aapl)
+        DrawDaTing(aapl)
+      })
 
-    // Declare the x (horizontal position) scale.
-    const x = d3
-      .scaleUtc()
-      .domain([new Date('2023-01-01'), new Date('2024-01-01')])
-      .range([marginLeft, width - marginRight])
+    function DrawDaTing(aapl: any) {
+      const width = 928
+      const height = 500
+      const marginTop = 20
+      const marginRight = 30
+      const marginBottom = 30
+      const marginLeft = 40
 
-    // Declare the y (vertical position) scale.
-    const y = d3
-      .scaleLinear()
-      .domain([0, 100])
-      .range([height - marginBottom, marginTop])
+      // Declare the x (horizontal position) scale.
+      const x = d3.scaleUtc(
+        d3.extent(aapl, (d) => d.date),
+        [marginLeft, width - marginRight]
+      )
 
-    // Create the SVG container.
-    const svg1 = d3.create('svg').attr('width', width).attr('height', height)
+      // Declare the y (vertical position) scale.
+      const y = d3.scaleLinear(
+        [0, d3.max(aapl, (d) => d.close)],
+        [height - marginBottom, marginTop]
+      )
 
-    // Add the x-axis.
-    svg1
-      .append('g')
-      .attr('transform', `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x))
+      // Declare the area generator.
+      const area = d3
+        .area()
+        .x((d) => x(d.date))
+        .y0(y(0))
+        .y1((d) => y(d.close))
 
-    // Add the y-axis.
-    svg1.append('g').attr('transform', `translate(${marginLeft},0)`).call(d3.axisLeft(y))
+      // Create the SVG container.
+      const svg = d3
+        .create('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('viewBox', [0, 0, width, height])
+        .attr('style', 'max-width: 100%; height: auto;')
 
-    // Return the SVG element.
-    return canvas.append(svg1.node())
+      // Append a path for the area (under the axes).
+      svg.append('path').attr('fill', 'steelblue').attr('d', area(aapl))
+
+      // Add the x-axis.
+      svg
+        .append('g')
+        .attr('transform', `translate(0,${height - marginBottom})`)
+        .call(
+          d3
+            .axisBottom(x)
+            .ticks(width / 80)
+            .tickSizeOuter(0)
+        )
+
+      // Add the y-axis, remove the domain line, add grid lines and a label.
+      svg
+        .append('g')
+        .attr('transform', `translate(${marginLeft},0)`)
+        .call(d3.axisLeft(y).ticks(height / 40))
+        .call((g) => g.select('.domain').remove())
+        .call((g) =>
+          g
+            .selectAll('.tick line')
+            .clone()
+            .attr('x2', width - marginLeft - marginRight)
+            .attr('stroke-opacity', 0.1)
+        )
+        .call((g) =>
+          g
+            .append('text')
+            .attr('x', -marginLeft)
+            .attr('y', 10)
+            .attr('fill', 'currentColor')
+            .attr('text-anchor', 'start')
+            .text('↑ Daily close ($)')
+        )
+
+      return canvas.append(svg.node())
+    }
   }
 }
 </script>
@@ -76,6 +126,9 @@ export default {
       </div>
       <div id="canvas" ref="canvas" class="canvas"></div>
       <svg id="svg" ref="svg" class="svg"></svg>
+      <p class="self-center text-zinc-400">
+        This time-series chart shows the daily close of Apple stock.
+      </p>
     </div>
   </div>
 </template>
