@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ChartOne from '../src/views/ChartOne.vue'
+import ChartBar from '../src/views/ChartTwo.vue'
 </script>
 
 <template>
@@ -23,6 +24,7 @@ import ChartOne from '../src/views/ChartOne.vue'
         </p>
       </div>
       <ChartOne />
+      <ChartBar />
     </div>
   </div>
 </template>

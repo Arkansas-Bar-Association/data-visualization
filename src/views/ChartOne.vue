@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import * as d3 from 'd3'
 import Papa from 'papaparse'
-import { ref } from 'vue'
 </script>
 
 <script lang="ts">
@@ -9,7 +8,7 @@ export default {
   mounted() {
     let aapl = []
 
-    const response = fetch('../src/assets/aapl.csv')
+    fetch('../src/assets/aapl.csv')
       .then((csv) => csv.text())
       .then((csv) =>
         Papa.parse(csv, {
