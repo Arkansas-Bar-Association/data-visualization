@@ -8,12 +8,20 @@ import ChartThree from '../src/views/ChartThree.vue'
   <header></header>
   <div class="min-h-screen flex flex-col max-w-6xl mx-auto">
     <div class="self-end py-8 px-12 gap-4 flex">
-      <button class="text-zinc-400 hover:text-black transition delay-50 hover:underline">
+      <a
+        href="https://github.com/Arkansas-Bar-Association"
+        target="blank"
+        class="text-zinc-400 hover:text-black transition delay-50 hover:underline"
+      >
         Github
-      </button>
-      <button class="text-zinc-400 hover:text-black transition delay-50 hover:underline">
+      </a>
+      <a
+        href="https://portfolio-arkansas-bar-association.vercel.app/"
+        target="blank"
+        class="text-zinc-400 hover:text-black transition delay-50 hover:underline"
+      >
         Portfolio
-      </button>
+      </a>
     </div>
     <div class="flex flex-col self-center h-[20vh]">
       <div class="my-auto">
