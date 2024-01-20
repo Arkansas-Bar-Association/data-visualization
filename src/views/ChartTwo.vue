@@ -62,9 +62,9 @@ export default {
       var tooltip = d3
         .select('#canvasBar')
         .append('div')
-        .text('shit')
         .attr('class', 'tooltip')
         .style('opacity', 0)
+        .style('position', 'absolute')
 
       // Add a rect for each bar.
       svg
@@ -94,9 +94,8 @@ export default {
                 d.frequency +
                 '</span>'
             )
-            .style('position', 'relative')
-            .style('top', event.offsetY + 'px')
-            .style('left', event.offsetX + 'px')
+            .style('top', event.offsetY + 600 + 'px')
+            .style('left', event.offsetX + 128 + 'px')
             .style('width', '100px')
             .style('background-color', 'gray')
             .style('padding', '8px')
