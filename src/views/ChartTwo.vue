@@ -100,6 +100,7 @@ export default {
             .style('width', '100px')
             .style('background-color', 'gray')
             .style('padding', '8px')
+            .style('font-weight', 'bold')
         })
         .on('mouseout', function () {
           var rect = d3.select(this)
