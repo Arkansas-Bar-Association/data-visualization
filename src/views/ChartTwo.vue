@@ -58,6 +58,14 @@ export default {
         .attr('viewBox', [0, 0, width, height])
         .attr('style', 'max-width: 100%; height: auto;')
 
+      //tooltip, god i hate this part.
+      var tooltip = d3
+        .select('#canvasBar')
+        .append('div')
+        .text('shit')
+        .attr('class', 'tooltip')
+        .style('opacity', 0)
+
       // Add a rect for each bar.
       svg
         .append('g')
@@ -73,13 +81,31 @@ export default {
         .attr('class', 'bar hover:fill-green-500')
         .on('mouseover', (event, d) => {
           var rect = d3.select(this)
-          rect.attr('class', 'mouseover')
+          rect.attr('class', 'moused-over')
           console.log('Letter = ' + d.letter + ' Frequency = ' + d.frequency)
+          console.log(event)
+          tooltip.transition().duration(100).style('opacity', 0.9)
+          tooltip
+            .html(
+              '<span>' +
+                d.letter +
+                ' Letter </span><br><span>' +
+                'Frequency ' +
+                d.frequency +
+                '</span>'
+            )
+            .style('position', 'relative')
+            .style('top', event.offsetY + 'px')
+            .style('left', event.offsetX + 'px')
+            .style('width', '100px')
+            .style('background-color', 'gray')
+            .style('padding', '8px')
         })
-
-      //tooltip, god i hate this part.
-      var tooltip = d3.select('#canvasBar').append('div').text('shit').attr('class', 'tooltip')
-      //.style('opacity', 0)
+        .on('mouseout', function () {
+          var rect = d3.select(this)
+          rect.attr('class', 'bar hover:fill-green-500')
+          tooltip.transition().duration(400).style('opacity', 0)
+        })
 
       // Add the x-axis and label.
       svg

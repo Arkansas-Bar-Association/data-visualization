@@ -27,6 +27,7 @@ import ChartThree from '../src/views/ChartThree.vue'
       <ChartOne />
       <ChartBar />
       <ChartThree />
+      <div class="p-24"></div>
     </div>
   </div>
 </template>
