@@ -61,14 +61,25 @@ export default {
       // Add a rect for each bar.
       svg
         .append('g')
-        .attr('fill', 'steelblue')
+        .attr('fill', 'green')
         .selectAll()
         .data(data)
+
         .join('rect')
         .attr('x', (d) => x(d.letter))
         .attr('y', (d) => y(d.frequency))
         .attr('height', (d) => y(0) - y(d.frequency))
         .attr('width', x.bandwidth())
+        .attr('class', 'bar hover:fill-green-500')
+        .on('mouseover', (event, d) => {
+          var rect = d3.select(this)
+          rect.attr('class', 'mouseover')
+          console.log('Letter = ' + d.letter + ' Frequency = ' + d.frequency)
+        })
+
+      //tooltip, god i hate this part.
+      var tooltip = d3.select('#canvasBar').append('div').text('shit').attr('class', 'tooltip')
+      //.style('opacity', 0)
 
       // Add the x-axis and label.
       svg

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ChartOne from '../src/views/ChartOne.vue'
 import ChartBar from '../src/views/ChartTwo.vue'
+import ChartThree from '../src/views/ChartThree.vue'
 </script>
 
 <template>
@@ -25,6 +26,7 @@ import ChartBar from '../src/views/ChartTwo.vue'
       </div>
       <ChartOne />
       <ChartBar />
+      <ChartThree />
     </div>
   </div>
 </template>
