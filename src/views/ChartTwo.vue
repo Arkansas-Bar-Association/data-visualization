@@ -8,7 +8,7 @@ export default {
   mounted() {
     let barchart = []
 
-    fetch('../src/assets/data.csv')
+    fetch('/data.csv')
       .then((csv) => csv.text())
       .then((csv) =>
         Papa.parse(csv, {

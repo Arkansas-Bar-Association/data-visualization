@@ -8,7 +8,7 @@ export default {
   mounted() {
     let aapl = []
 
-    fetch('../src/assets/aapl.csv')
+    fetch('/aapl.csv')
       .then((csv) => csv.text())
       .then((csv) =>
         Papa.parse(csv, {
