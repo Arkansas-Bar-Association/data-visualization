@@ -35,22 +35,22 @@ export default {
 
       // Declare the x (horizontal position) scale.
       const x = d3.scaleUtc(
-        d3.extent(aapl, (d) => d.date),
+        d3.extent(aapl, (d: any) => d.date) as unknown as Iterable<d3.NumberValue>,
         [marginLeft, width - marginRight]
       )
 
       // Declare the y (vertical position) scale.
       const y = d3.scaleLinear(
-        [0, d3.max(aapl, (d) => d.close)],
+        [0, d3.max(aapl, (d: any) => d.close) as unknown as number],
         [height - marginBottom, marginTop]
       )
 
       // Declare the area generator.
       const area = d3
         .area()
-        .x((d) => x(d.date))
+        .x((d: any) => x(d.date))
         .y0(y(0))
-        .y1((d) => y(d.close))
+        .y1((d: any) => y(d.close))
 
       // Create the SVG container.
       const svg = d3
@@ -97,7 +97,8 @@ export default {
             .text('↑ Daily close ($)')
         )
 
-      return canvas.append(svg.node())
+      var element: any = document.getElementById('canvas')
+      return element.append(svg.node())
     }
   }
 }

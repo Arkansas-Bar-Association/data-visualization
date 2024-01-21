@@ -37,8 +37,8 @@ export default {
         .domain(
           d3.groupSort(
             data,
-            ([d]) => -d.frequency,
-            (d) => d.letter
+            ([d]: any) => -d.frequency,
+            (d: any) => d.letter
           )
         ) // descending frequency
         .range([marginLeft, width - marginRight])
@@ -47,7 +47,7 @@ export default {
       // Declare the y (vertical position) scale.
       const y = d3
         .scaleLinear()
-        .domain([0, d3.max(data, (d) => d.frequency)])
+        .domain([0, d3.max(data, (d: any) => d.frequency) as unknown as number])
         .range([height - marginBottom, marginTop])
 
       // Create the SVG container.
@@ -74,14 +74,14 @@ export default {
         .data(data)
 
         .join('rect')
-        .attr('x', (d) => x(d.letter))
-        .attr('y', (d) => y(d.frequency))
-        .attr('height', (d) => y(0) - y(d.frequency))
+        .attr('x', (d: any) => x(d.letter) as any)
+        .attr('y', (d: any) => y(d.frequency))
+        .attr('height', (d: any) => y(0) - y(d.frequency))
         .attr('width', x.bandwidth())
         .attr('class', 'bar hover:fill-green-500')
-        .on('mouseover', (event, d) => {
+        .on('mouseover', function (event: any, d: any) {
           var rect = d3.select(this)
-          rect.attr('class', 'moused-over')
+          rect.attr('class', 'moused-over hover:fill-green-500')
           console.log('Letter = ' + d.letter + ' Frequency = ' + d.frequency)
           console.log(event)
           tooltip.transition().duration(100).style('opacity', 0.9)
@@ -94,12 +94,13 @@ export default {
                 d.frequency +
                 '</span>'
             )
-            .style('top', event.offsetY + 600 + 'px')
-            .style('left', event.offsetX + 128 + 'px')
+            .style('top', event.offsetY - 100 + 'px')
+            .style('left', event.offsetX - 100 + 'px')
             .style('width', '100px')
             .style('background-color', 'gray')
             .style('padding', '8px')
             .style('font-weight', 'bold')
+            .attr('class', 'hover:fill-green-500')
         })
         .on('mouseout', function () {
           var rect = d3.select(this)
@@ -117,7 +118,7 @@ export default {
       svg
         .append('g')
         .attr('transform', `translate(${marginLeft},0)`)
-        .call(d3.axisLeft(y).tickFormat((y) => (y * 100).toFixed()))
+        .call(d3.axisLeft(y).tickFormat((y: any) => (y * 100).toFixed()))
         .call((g) => g.select('.domain').remove())
         .call((g) =>
           g
@@ -130,7 +131,8 @@ export default {
         )
 
       // Return the SVG element.
-      return canvasBar.append(svg.node())
+      var element: any = document.getElementById('canvasBar')
+      return element.append(svg.node())
     }
   }
 }
@@ -138,7 +140,7 @@ export default {
 
 <template>
   <div class="flex flex-col">
-    <div id="canvasBar" ref="canvasBar" class="canvasBar"></div>
+    <div id="canvasBar" ref="canvasBar" class="canvasBar relative"></div>
     <p class="self-center text-zinc-400">
       This chart shows the relative frequency of letters in the English language.
     </p>
